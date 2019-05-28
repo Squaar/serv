@@ -1,5 +1,7 @@
 .idea
 deploy.sh
+node_modules
+dist
 
 
 # Byte-compiled / optimized / DLL files

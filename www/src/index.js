@@ -1,4 +1,7 @@
 'use strict';
+import React from "react";
+import ReactDOM from "react-dom";
+import PaintApp from "./paint.js";
 
 class LikeButton extends React.Component{
     constructor(props){
@@ -107,7 +110,7 @@ class App extends React.Component{
         return(
             <div className="container-fluid px-0">
                 <Header />
-                <LikeButton />
+                <PaintApp />
             </div>
         );
     }
