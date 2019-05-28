@@ -1,7 +1,8 @@
 .idea
 deploy.sh
-node_modules
-dist
+electron.sh
+www/node_modules
+www/dist*
 
 
 # Byte-compiled / optimized / DLL files
