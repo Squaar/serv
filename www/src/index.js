@@ -1,7 +1,44 @@
 'use strict';
 import React from "react";
 import ReactDOM from "react-dom";
+import $ from "jquery";
 import PaintApp from "./paint.js";
+
+class App extends React.Component{
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return(
+            <div className="container-fluid px-0">
+                <Header />
+                <PaintApp />
+                <PingPonger interval={5 * 1000} color="green" size={500}/>
+            </div>
+        );
+    }
+}
+
+class Header extends React.Component{
+    constructor(props){
+        super(props);
+     }
+
+    render(){
+        return(
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-1" id="header">
+                <ul className="navbar-nav">
+                    <li className="nav-item"><a href="#" className="navbar-brand">Serv</a></li>
+                </ul>
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item"><PingPonger interval={5 * 1000} color="green" size={10}/></li>
+                    <li className="nav-item"><MouseTracker /></li>
+                </ul>
+            </nav>
+        );
+    }
+}
 
 class LikeButton extends React.Component{
     constructor(props){
@@ -82,39 +119,56 @@ class MouseTracker extends React.Component{
     }
 }
 
-class Header extends React.Component{
+class PingPonger extends React.Component {
     constructor(props){
         super(props);
-     }
+        this.state = {};
+        this.ctx = null;
+        this.canvas = null;
 
+        this.ping = this.ping.bind(this);
+        this.setContext = this.setContext.bind(this);
+    }
+
+    ping(){
+        console.log("PING");
+        var self = this;
+        var jqxhr = $.get("http://localhost:5000/ping")
+            .done(function(data, status, jqxhr2){
+                console.log(data + ", " + status + ", " + jqxhr2);
+                self.ctx.arc(self.props.size / 2, self.props.size / 2, self.props.size / 2, 0, Math.PI * 2, false);
+                self.ctx.fillStyle = self.props.color;
+                self.ctx.fill();
+            })
+            .fail(function(jqxhr2, status, error){
+                console.log(jqxhr2 + ", " + status + ", " + error);
+            })
+            .always(function(){
+
+            });
+    }
+
+    setContext(c){
+        this.ctx = c.getContext("2d");
+        this.canvas = c;
+    }
+
+    //TODO: vertically align this junk
     render(){
-        return(
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-1" id="header">
-                <ul className="navbar-nav">
-                    <li className="nav-item"><a href="#" className="navbar-brand">Serv</a></li>
-                </ul>
-                <ul className="navbar-nav ml-auto">
-                    <li className="nav-item"><MouseTracker /></li>
-                </ul>
-            </nav>
-        );
+        return <canvas ref={this.setContext} width={this.props.size} height={this.props.size}></canvas>;
+    }
+
+    componentDidMount(){
+        this.intervalId = setInterval(() => {this.ping();}, this.props.interval);
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.intervalId)
     }
 }
 
-class App extends React.Component{
-    constructor(props){
-        super(props);
-    }
 
-    render(){
-        return(
-            <div className="container-fluid px-0">
-                <Header />
-                <PaintApp />
-            </div>
-        );
-    }
-}
+
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
