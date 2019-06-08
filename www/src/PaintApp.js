@@ -1,12 +1,6 @@
-"use strict";
 import React from "react";
-import ReactDOM from "react-dom";
 
 export default class PaintApp extends React.Component {
-    constructor(props){
-        super(props);
-    }
-    
     render(){
         return <div className="paintapp">
             <PaintToolbar />
@@ -23,12 +17,7 @@ export default class PaintApp extends React.Component {
     }
 }
 
-class PaintToolbar extends React.Component {
-    constructor(props){
-        super(props);
-        
-    }
-    
+class PaintToolbar extends React.Component {    
     render(){
         return "toolbar";
     }

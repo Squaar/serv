@@ -1,8 +1,12 @@
 .idea
+.vscode
 deploy.sh
 electron.sh
-www/node_modules
-www/dist*
+*/node_modules
+*/dist*
+*/build
+/*.bak
+.bak
 
 
 # Byte-compiled / optimized / DLL files
